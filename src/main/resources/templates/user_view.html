@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      background-color: #343a40;
+      color: #fff;
+    }
+    .navbar-brand {
+      font-size: 1.25rem;
+    }
+    .nav-link {
+      color: #fff !important;
+    }
+    .nav-link.active,
+    .nav-link:hover {
+      background-color: #007bff;
+    }
+    .container-fluid {
+      padding-top: 20px;
+    }
+    .col-2 {
+      background-color: #fff;
+      border-radius: 5px;
+      padding: 10px;
+    }
+    .col-md-10 {
+      padding-left: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+    .card-header {
+      background-color: #f8f9fa !important;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-dark sticky-top">
+        <span class="navbar-brand">
+            <strong>User</strong>
+            <span>with roles: User</span>
+        </span>
+    <ul class="navbar-nav px-4">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2">
+      <ul class="nav flex-sm-column">
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')" th:hidden="${!user.isAdmin()}">
+          <a class="nav-link rounded"
+             href="#" th:href="@{/admin/page}">Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link rounded" th:classappend="${'active bg-primary text-white'}"
+             href="#" th:href="@{/user/page}" aria-current="page">User</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-10">
+      <h1>User information-page</h1>
+
+      <div class="card">
+        <div class="card-header">
+          <p class="fw-bold h5 mt-1">About user</p>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped border-top">
+            <thead>
+            <tr>
+              <th scope="col"><strong>ID</strong></th>
+              <th scope="col"><strong>First Name</strong></th>
+              <th scope="col"><strong>Last Name</strong></th>
+              <th scope="col"><strong>Email</strong></th>
+              <th scope="col"><strong>Role</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><a th:text="${user.getId()}"></a></td>
+              <td><a th:text="${user.getName()}"></a></td>
+              <td><a th:text="${user.getSurname()}"></a></td>
+              <td><a th:text="${user.getEmail()}"></a></td>
+              <td><a th:text="${user.getRoles()}"></a></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
