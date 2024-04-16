@@ -20,3 +20,4 @@ public interface UserService extends UserDetailsService {
     void adminRedactor(User user, Long id);
     User getUserByEmail(String email);
 }
+
