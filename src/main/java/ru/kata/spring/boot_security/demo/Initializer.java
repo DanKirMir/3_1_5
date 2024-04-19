@@ -6,12 +6,15 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
 public class Initializer {
     private final UserService userService;
+
 
     public Initializer(UserService userService) {
         this.userService = userService;
@@ -19,15 +22,16 @@ public class Initializer {
 
     @PostConstruct
     public void init() {
-        User admin = new User("admin@mail.ru", "admin");
-        Role userRole = new Role("ROLE_USER");
-        Role adminRole = new Role("ROLE_ADMIN");
+        User user = userService.getUserByEmail("admin@mail.ru");
+        if (user == null) {
+            Role userRole = new Role("ROLE_USER");
+            Role adminRole = new Role("ROLE_ADMIN");
+            List<Role> adminRoles = new ArrayList<>();
+            adminRoles.add(userRole);
+            adminRoles.add(adminRole);
+            User admin = new User(adminRoles, "admin", "admin", (byte) 35, "admin@mail.ru", "admin@mail.ru", "admin");
 
-        Set<Role> adminRoles = new HashSet<>();
-        adminRoles.add(userRole);
-        adminRoles.add(adminRole);
-        admin.setRoles(adminRoles);
-
-        userService.saveUser(admin);
+            userService.save(admin);
+        }
     }
 }
